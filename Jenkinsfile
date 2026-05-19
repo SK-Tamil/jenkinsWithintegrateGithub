@@ -6,13 +6,13 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/SK-Tamil/jenkinsWithintegrateGithub.git'
+                url: 'https://github.com/USERNAME/REPO.git'
             }
         }
 
         stage('Build') {
             steps {
-               sh '''
+                sh '''
                 python3 -m venv venv
                 . venv/bin/activate
                 pip install --upgrade pip
@@ -33,8 +33,12 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                pkill -f "gunicorn" || true
-                nohup venv/bin/gunicorn -w 4 -b 0.0.0.0:5000 app:app > app.log 2>&1 &
+                pkill -f gunicorn || true
+
+                nohup venv/bin/gunicorn \
+                -w 4 \
+                -b 0.0.0.0:5000 \
+                app:app > app.log 2>&1 &
                 '''
             }
         }
