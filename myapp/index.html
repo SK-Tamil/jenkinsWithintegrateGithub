@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DevOps Department</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family:'Poppins',sans-serif;
+      background:
+      radial-gradient(circle at top left,#00f0ff22,transparent 25%),
+      radial-gradient(circle at bottom right,#ff00d422,transparent 25%),
+      linear-gradient(135deg,#020617,#0f172a,#111827);
+      color:white;
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    /* ========================= */
+    /* Animated Background */
+    /* ========================= */
+
+    .bg{
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      overflow:hidden;
+    }
+
+    .bubble{
+      position:absolute;
+      border-radius:50%;
+      background:rgba(0,255,255,0.08);
+      animation:float 15s infinite linear;
+    }
+
+    .bubble:nth-child(1){
+      width:250px;
+      height:250px;
+      left:-100px;
+      top:100px;
+    }
+
+    .bubble:nth-child(2){
+      width:180px;
+      height:180px;
+      right:-50px;
+      top:200px;
+      background:rgba(255,0,200,0.08);
+    }
+
+    .bubble:nth-child(3){
+      width:300px;
+      height:300px;
+      bottom:-120px;
+      left:30%;
+    }
+
+    @keyframes float{
+
+      0%{
+        transform:translateY(0) rotate(0deg);
+      }
+
+      50%{
+        transform:translateY(-25px) rotate(180deg);
+      }
+
+      100%{
+        transform:translateY(0) rotate(360deg);
+      }
+
+    }
+
+    /* ========================= */
+    /* Main Container */
+    /* ========================= */
+
+    .container{
+      width:100%;
+      min-height:100vh;
+      padding:20px;
+    }
+
+    /* ========================= */
+    /* Header */
+    /* ========================= */
+
+    .header{
+      text-align:center;
+      margin-bottom:30px;
+    }
+
+    .header h1{
+      font-family:'Orbitron',sans-serif;
+      font-size:42px;
+      background:linear-gradient(to right,#00f0ff,#ff00d4);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      margin-bottom:10px;
+      letter-spacing:2px;
+    }
+
+    .header p{
+      color:#94a3b8;
+      font-size:15px;
+    }
+
+    /* ========================= */
+    /* Layout */
+    /* ========================= */
+
+    .dashboard{
+      display:grid;
+      grid-template-columns:320px 1fr;
+      gap:25px;
+    }
+
+    /* ========================= */
+    /* Sidebar */
+    /* ========================= */
+
+    .sidebar{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:30px;
+      padding:20px;
+      backdrop-filter:blur(15px);
+      height:calc(100vh - 120px);
+      overflow-y:auto;
+    }
+
+    .sidebar::-webkit-scrollbar{
+      width:5px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb{
+      background:#00f0ff;
+      border-radius:10px;
+    }
+
+    .sidebar-title{
+      color:#00f0ff;
+      font-size:22px;
+      margin-bottom:20px;
+      font-weight:600;
+    }
+
+    /* ========================= */
+    /* Member Card */
+    /* ========================= */
+
+    .member-card{
+      display:flex;
+      align-items:center;
+      gap:15px;
+      padding:15px;
+      border-radius:22px;
+      margin-bottom:18px;
+      background:rgba(255,255,255,0.04);
+      cursor:pointer;
+      transition:0.4s;
+      border:1px solid transparent;
+    }
+
+    .member-card:hover{
+      transform:translateX(8px);
+      border-color:#00f0ff;
+      background:rgba(0,240,255,0.08);
+    }
+
+    .member-card.active{
+      background:linear-gradient(135deg,#00f0ff22,#ff00d422);
+      border-color:#00f0ff;
+      box-shadow:0 10px 25px rgba(0,240,255,0.25);
+    }
+
+    .member-card img{
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      object-fit:cover;
+      border:3px solid #00f0ff;
+    }
+
+    .member-info h2{
+      font-size:20px;
+      margin-bottom:4px;
+    }
+
+    .member-info p{
+      color:#94a3b8;
+      font-size:13px;
+    }
+
+    /* ========================= */
+    /* Main Panel */
+    /* ========================= */
+
+    .main-panel{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:35px;
+      backdrop-filter:blur(15px);
+      padding:40px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .main-panel::before{
+      content:'';
+      position:absolute;
+      width:450px;
+      height:450px;
+      border-radius:50%;
+      background:#00f0ff11;
+      top:-150px;
+      right:-120px;
+      filter:blur(80px);
+    }
+
+    /* ========================= */
+    /* Profile */
+    /* ========================= */
+
+    .profile{
+      display:flex;
+      align-items:center;
+      gap:50px;
+      width:100%;
+      z-index:1;
+    }
+
+    /* ========================= */
+    /* Profile Image */
+    /* ========================= */
+
+    .profile-image img{
+      width:320px;
+      height:320px;
+      object-fit:cover;
+      border-radius:30px;
+      border:5px solid #00f0ff;
+      box-shadow:
+      0 0 25px rgba(0,240,255,0.5),
+      0 0 60px rgba(0,240,255,0.2);
+
+      animation:glow 3s infinite alternate;
+    }
+
+    @keyframes glow{
+
+      from{
+        box-shadow:
+        0 0 20px rgba(0,240,255,0.3),
+        0 0 50px rgba(0,240,255,0.2);
+      }
+
+      to{
+        box-shadow:
+        0 0 40px rgba(0,240,255,0.7),
+        0 0 90px rgba(0,240,255,0.4);
+      }
+
+    }
+
+    /* ========================= */
+    /* Profile Content */
+    /* ========================= */
+
+    .profile-content{
+      flex:1;
+    }
+
+    /* ========================= */
+    /* DISCO LIGHT NAME */
+    /* ========================= */
+
+    .profile-content h1{
+
+      font-family:'Orbitron',sans-serif;
+      font-size:60px;
+      margin-bottom:10px;
+
+      background:linear-gradient(
+      90deg,
+      #00f0ff,
+      #ff00d4,
+      #00ff88,
+      #ffee00,
+      #00f0ff
+      );
+
+      background-size:400%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+
+      animation:
+      discoText 20s linear infinite,
+      glowText 5s ease-in-out infinite alternate;
+
+    }
+
+    @keyframes discoText{
+
+      0%{
+        background-position:0%;
+      }
+
+      100%{
+        background-position:400%;
+      }
+
+    }
+
+    @keyframes glowText{
+
+      0%{
+        text-shadow:
+        0 0 5px #00f0ff,
+        0 0 10px #00f0ff,
+        0 0 20px #00f0ff;
+      }
+
+      25%{
+        text-shadow:
+        0 0 5px #ff00d4,
+        0 0 10px #ff00d4,
+        0 0 20px #ff00d4;
+      }
+
+      50%{
+        text-shadow:
+        0 0 5px #00ff88,
+        0 0 10px #00ff88,
+        0 0 20px #00ff88;
+      }
+
+      75%{
+        text-shadow:
+        0 0 5px #ffee00,
+        0 0 10px #ffee00,
+        0 0 20px #ffee00;
+      }
+
+      100%{
+        text-shadow:
+        0 0 5px #00f0ff,
+        0 0 10px #00f0ff,
+        0 0 20px #00f0ff;
+      }
+
+    }
+
+    /* ========================= */
+    /* Role */
+    /* ========================= */
+
+    .profile-content h3{
+      color:#00f0ff;
+      margin-bottom:25px;
+      font-size:24px;
+      font-weight:500;
+    }
+
+    /* ========================= */
+    /* Bio */
+    /* ========================= */
+
+    .profile-content p{
+      color:#d1d5db;
+      line-height:2;
+      font-size:17px;
+      margin-bottom:30px;
+    }
+
+    /* ========================= */
+    /* Skills */
+    /* ========================= */
+
+    .skills{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+
+    .skill{
+      padding:12px 20px;
+      border-radius:50px;
+      background:#111827;
+      border:1px solid #334155;
+      color:#00f0ff;
+      transition:0.3s;
+      font-size:14px;
+    }
+
+    .skill:hover{
+      transform:translateY(-5px);
+      background:#00f0ff;
+      color:black;
+      box-shadow:0 10px 25px rgba(0,240,255,0.4);
+    }
+
+    /* ========================= */
+    /* Social Icons */
+    /* ========================= */
+
+    .socials{
+      margin-top:30px;
+      display:flex;
+      gap:15px;
+    }
+
+    .socials a{
+      width:45px;
+      height:45px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:#111827;
+      border:1px solid #334155;
+      color:#00f0ff;
+      text-decoration:none;
+      transition:0.3s;
+      font-size:18px;
+    }
+
+    .socials a:hover{
+      background:#00f0ff;
+      color:black;
+      transform:translateY(-5px);
+    }
+
+    /* ========================= */
+    /* Mobile Responsive */
+    /* ========================= */
+
+    @media(max-width:1100px){
+
+      .dashboard{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        width:100%;
+        height:auto;
+      }
+
+      .profile{
+        flex-direction:column;
+        text-align:center;
+      }
+
+      .profile-image img{
+        width:250px;
+        height:250px;
+      }
+
+      .profile-content h1{
+        font-size:42px;
+      }
+
+      .profile-content h3{
+        font-size:20px;
+      }
+
+      .profile-content p{
+        font-size:15px;
+        line-height:1.8;
+      }
+
+      .skills{
+        justify-content:center;
+      }
+
+      .socials{
+        justify-content:center;
+      }
+
+    }
+
+    @media(max-width:600px){
+
+      .container{
+        padding:15px;
+      }
+
+      .header h1{
+        font-size:28px;
+      }
+
+      .main-panel{
+        padding:25px 20px;
+      }
+
+      .profile-image img{
+        width:190px;
+        height:190px;
+      }
+
+      .profile-content h1{
+        font-size:30px;
+      }
+
+      .profile-content h3{
+        font-size:16px;
+      }
+
+      .profile-content p{
+        font-size:14px;
+      }
+
+      .member-card{
+        padding:12px;
+      }
+
+      .member-card img{
+        width:60px;
+        height:60px;
+      }
+
+      .member-info h2{
+        font-size:17px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Background -->
+
+  <div class="bg">
+
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+  </div>
+
+  <div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <h1>DEVOPS DEPARTMENT</h1>
+
+      <p>
+        Futuristic Interactive Team Showcase Developed by SK@TAMIL
+      </p>
+
+    </div>
+
+    <!-- DASHBOARD -->
+
+    <div class="dashboard">
+
+      <!-- SIDEBAR -->
+
+      <div class="sidebar">
+
+        <div class="sidebar-title">
+          Team Members
+        </div>
+
+        <!-- Tamil -->
+
+        <div class="member-card active"
+          data-name="Tamil"
+          data-role="Senior DevOps Engineer"
+          data-image="images/tamil1.jpg"
+          data-bio="Tamil specializes in Kubernetes, Docker, Linux administration, CI/CD pipelines, cloud deployment, and scalable DevOps infrastructure automation."
+          data-skills="Docker,Kubernetes,Jenkins,AWS,Linux">
+
+          <img src="images/tamil.jpg">
+
+          <div class="member-info">
+            <h2>Tamil</h2>
+            <p>Senior DevOps Engineer</p>
+          </div>
+
+        </div>
+
+        <!-- Rosin -->
+
+        <div class="member-card"
+          data-name="Rosin"
+          data-role="Cloud Architect"
+          data-image="images/rosin1.jpeg"
+          data-bio="Rosin designs secure cloud systems, scalable infrastructure, monitoring solutions, and advanced automation workflows."
+          data-skills="AWS,Terraform,Cloud Security,Ansible">
+
+          <img src="images/rosin.jpeg">
+
+          <div class="member-info">
+            <h2>Rosin</h2>
+            <p>Cloud Architect</p>
+          </div>
+
+        </div>
+
+        <!-- Kavinesh -->
+
+        <div class="member-card"
+          data-name="Kavinesh"
+          data-role="SRE Engineer"
+          data-image="images/kavi1.jpeg"
+          data-bio="Dhinesh focuses on observability systems, reliability engineering, monitoring platforms, and automation pipelines."
+          data-skills="Grafana,Prometheus,SRE,Monitoring">
+
+          <img src="images/kavi.jpeg">
+
+          <div class="member-info">
+            <h2>Kavinesh</h2>
+            <p>SRE Engineer</p>
+          </div>
+
+        </div>
+
+        <!-- Abdul -->
+
+        <div class="member-card"
+          data-name="Abdul"
+          data-role="Automation Engineer"
+          data-image="images/abdul1.jpeg"
+          data-bio="Abdul develops DevSecOps pipelines, CI/CD systems, deployment automation, and cloud optimization workflows."
+          data-skills="GitHub Actions,Python,Jenkins,DevSecOps">
+
+          <img src="images/abdul.jpeg">
+
+          <div class="member-info">
+            <h2>Abdul</h2>
+            <p>Automation Engineer</p>
+          </div>
+
+        </div>
+
+        <!-- Anandhan -->
+
+        <div class="member-card"
+          data-name="Anandhan"
+          data-role="Infrastructure Engineer"
+          data-image="images/anandhan.jpeg"
+          data-bio="Anandhan manages networking, virtualization systems, Linux servers, and scalable infrastructure environments."
+          data-skills="VMware,Networking,Azure,Linux">
+
+          <img src="images/anandhan.jpeg">
+
+          <div class="member-info">
+            <h2>Anandhan</h2>
+            <p>Infrastructure Engineer</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- MAIN PANEL -->
+
+      <div class="main-panel">
+
+        <div class="profile">
+
+          <!-- IMAGE -->
+
+          <div class="profile-image">
+
+            <img id="profileImage"
+            src="images/tamil1.jpg">
+
+          </div>
+
+          <!-- CONTENT -->
+
+          <div class="profile-content">
+
+            <h1 id="profileName">
+              Tamil
+            </h1>
+
+            <h3 id="profileRole">
+              Senior DevOps Engineer
+            </h3>
+
+            <p id="profileBio">
+              Tamil specializes in Kubernetes, Docker,
+              Linux administration, CI/CD pipelines,
+              cloud deployment, and scalable DevOps
+              infrastructure automation.
+            </p>
+
+            <!-- SKILLS -->
+
+            <div class="skills" id="skillsContainer">
+
+              <div class="skill">Docker</div>
+              <div class="skill">Kubernetes</div>
+              <div class="skill">Jenkins</div>
+              <div class="skill">AWS</div>
+              <div class="skill">Linux</div>
+
+            </div>
+
+            <!-- SOCIAL -->
+
+            <div class="socials">
+
+              <a href="#">
+                <i class="fab fa-github"></i>
+              </a>
+
+              <a href="#">
+                <i class="fab fa-linkedin"></i>
+              </a>
+
+              <a href="#">
+                <i class="fab fa-twitter"></i>
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- JavaScript -->
+
+  <script>
+
+    const cards = document.querySelectorAll('.member-card');
+
+    const profileName =
+    document.getElementById('profileName');
+
+    const profileRole =
+    document.getElementById('profileRole');
+
+    const profileBio =
+    document.getElementById('profileBio');
+
+    const profileImage =
+    document.getElementById('profileImage');
+
+    const skillsContainer =
+    document.getElementById('skillsContainer');
+
+    cards.forEach(card => {
+
+      card.addEventListener('click', () => {
+
+        // Remove active class
+
+        cards.forEach(c =>
+          c.classList.remove('active')
+        );
+
+        // Add active class
+
+        card.classList.add('active');
+
+        // Update content
+
+        profileName.textContent =
+        card.dataset.name;
+
+        profileRole.textContent =
+        card.dataset.role;
+
+        profileBio.textContent =
+        card.dataset.bio;
+
+        profileImage.src =
+        card.dataset.image;
+
+        // Skills
+
+        const skills =
+        card.dataset.skills.split(',');
+
+        skillsContainer.innerHTML = '';
+
+        skills.forEach(skill => {
+
+          skillsContainer.innerHTML += `
+            <div class="skill">
+              ${skill}
+            </div>
+          `;
+
+        });
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>
